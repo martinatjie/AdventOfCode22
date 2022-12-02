@@ -8,9 +8,9 @@ namespace Day2
 {
     internal class GameRound
     {
-        public char OpponentHand { get; set; }
-        public char MyHand { get; set; }
-        public int OpponentScore { get; set; }
+        //public char OpponentHand { get; set; }
+        //public char MyHand { get; set; }
+        //public int OpponentScore { get; set; }
         public int MyScore { get; set; }
     }
 }
