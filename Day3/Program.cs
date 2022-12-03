@@ -22,9 +22,38 @@ for (char c = 'A'; c <= 'Z'; c++)
     priority++;
 }
 
-var sumOfPrioritizedLetters = 0;
+var sumOfPrioritizedLettersPart1 = 0;
+var sumOfPrioritizedLettersPart2 = 0;
 
-foreach (string line in File.ReadLines(@"RucksackContent.txt"))
+//load lines into an in-memory list
+var allLines = File.ReadLines(@"RucksackContent.txt");
+var lineGroups = allLines.Count() / 3;
+var take = 3;
+
+/// <summary>
+/// part 2
+/// </summary>
+for(int i = 0; i < lineGroups; i++)
+{
+    var skipAmount = i == 0 ? i : i * 3;
+    
+    //skip i*3, take 3
+    var elfGroup = allLines.Skip(skipAmount).Take(take).ToArray();
+
+    //get common priority for the set of 3
+    char commonCharacter = elfGroup[0].Intersect(elfGroup[1].Intersect(elfGroup[2])).First();
+
+    //select the number in the priority reference where the recorded character equals the character in the reference and add it to the sum
+    var commonPriority = priorities.Where(p => p.Value.Equals(commonCharacter)).First().Key;
+
+    //add this priority to the sum
+    sumOfPrioritizedLettersPart2 = sumOfPrioritizedLettersPart2 + commonPriority;
+}
+
+/// <summary>
+/// part 2
+/// </summary>
+foreach (string line in allLines)
 {
     //count number of characters in line and check for evenness
     var characterCount = line.Length;
@@ -33,11 +62,6 @@ foreach (string line in File.ReadLines(@"RucksackContent.txt"))
     {
         var chunkSize = characterCount / 2;
         //if character count is even, split into two substrings
-        //var lineChunks = line.Split(null, chunkSize);
-
-        //split characters into an array
-        //char[] firstChunk = lineChunks[0].ToArray();
-       // char[] secondChunk = lineChunks[0].ToArray();
 
         var firstChunk = line.Substring(0, chunkSize).ToArray();
         var secondChunk = line.Substring(chunkSize, chunkSize).ToArray();
@@ -47,7 +71,7 @@ foreach (string line in File.ReadLines(@"RucksackContent.txt"))
 
         //select the number in the priority reference where the recorded character equals the character in the reference and add it to the sum
         var selectedPriority = priorities.Where(p => p.Value.Equals(commonCharacter)).First().Key;
-        sumOfPrioritizedLetters = sumOfPrioritizedLetters + selectedPriority;
+        sumOfPrioritizedLettersPart1 = sumOfPrioritizedLettersPart1 + selectedPriority;
     }
     else
     {
@@ -57,7 +81,8 @@ foreach (string line in File.ReadLines(@"RucksackContent.txt"))
 }
 
 //now return the sum
-Console.WriteLine(sumOfPrioritizedLetters);
+Console.WriteLine($"answer part 1: {sumOfPrioritizedLettersPart1}");
+Console.WriteLine($"answer part 2: {sumOfPrioritizedLettersPart2}");
 
 Console.WriteLine("Day 3, done and dusted!");
 Console.ReadLine();
