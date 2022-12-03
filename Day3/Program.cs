@@ -20,18 +20,19 @@ for (char c = 'A'; c <= 'Z'; c++)
     priority++;
 }
 
-var sumOfPrioritizedLettersPart1 = 0;
-var sumOfPrioritizedLettersPart2 = 0;
-
 //load lines into an in-memory list
 var allLines = File.ReadLines(@"RucksackContent.txt");
-var lineGroups = allLines.Count() / 3;
-var take = 3;
 
 /// <summary>
 /// part 2
 /// </summary>
-for(int i = 0; i < lineGroups; i++)
+/// 
+
+var sumOfPrioritizedLettersPart2 = 0;
+var lineGroups = allLines.Count() / 3;
+var take = 3;
+
+for (int i = 0; i < lineGroups; i++)
 {
     var skipAmount = i == 0 ? i : i * 3;
     
@@ -49,8 +50,12 @@ for(int i = 0; i < lineGroups; i++)
 }
 
 /// <summary>
-/// part 2
+/// part 1
 /// </summary>
+/// 
+
+var sumOfPrioritizedLettersPart1 = 0;
+
 foreach (string line in allLines)
 {
     //count number of characters in line and check for evenness
