@@ -1,11 +1,9 @@
-﻿//read file line by line
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 
 //create a reference for letters a-z and A-Z and their priorities
 
 var priority = 1;
-//Hashtable priorities = new Hashtable();
 Dictionary<int, char> priorities = new Dictionary<int, char>();
 
 //1-26
