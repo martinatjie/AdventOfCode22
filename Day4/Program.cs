@@ -8,8 +8,12 @@ var overlapCount = 0;
 //var sampleString = "1-8,2-6";
 
 foreach (var spot in elfCleanupSpots) {
-    bool fullyContains = CompareCleanupSpots(spot);
-    bool overlap = CompareOverlaps(spot);
+
+    var splitStrings = spot.Split(',', '-');
+    var s = Array.ConvertAll(splitStrings, int.Parse);
+
+    bool fullyContains = FullyContainsOneOrTheOther(s);
+    bool overlap = CompareOverlaps(s);
 
     if (fullyContains)
     {
@@ -24,20 +28,11 @@ foreach (var spot in elfCleanupSpots) {
 
 
 Console.WriteLine($"Contain count: {containCount}, Overlap count: {overlapCount}");
+Console.WriteLine($"Day 4, done and dusted!");
 Console.ReadLine();
 
-static bool CompareCleanupSpots(string input)
+static bool CompareOverlaps(int[] s)
 {
-    int[] splitNumbers = ConvertToIntArray(input);
-
-    return FullyContainsOneOrTheOther(splitNumbers);
-
-}
-
-static bool CompareOverlaps(string input)
-{
-    int[] s = ConvertToIntArray(input);
-
     //conditions
     var ruleA = (s[2] >= s[0] && s[2] <= s[3]) && (s[1] >= s[0] && s[1] <= s[3]) && (s[2] <= s[1]);
     var ruleB = (s[0] >= s[2] && s[0] <= s[1]) && (s[3] >= s[2] && s[3] <= s[1]) && (s[0] <= s[3]);
@@ -49,13 +44,6 @@ static bool CompareOverlaps(string input)
     }
 
     return false;
-}
-
-static int[] ConvertToIntArray(string input)
-{
-    var splitStrings = input.Split(',', '-');
-    var splitNumbers = Array.ConvertAll(splitStrings, int.Parse);
-    return splitNumbers;
 }
 
 static bool FullyContainsOneOrTheOther(int[] splitNumbers)
