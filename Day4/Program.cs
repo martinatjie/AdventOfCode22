@@ -28,6 +28,7 @@ foreach (var spot in elfCleanupSpots) {
 
 
 Console.WriteLine($"Contain count: {containCount}, Overlap count: {overlapCount}");
+Console.WriteLine($"Day 4, done and dusted!");
 Console.ReadLine();
 
 static bool CompareOverlaps(int[] s)
