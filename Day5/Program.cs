@@ -1,5 +1,7 @@
 ﻿//---------------------SETUP-------------------------------//
 
+using Day5;
+/*
 Stack<char> crate1 = new Stack<char>();
 Stack<char> crate2 = new Stack<char>();
 Stack<char> crate3 = new Stack<char>();
@@ -13,14 +15,14 @@ Stack<char> crate9 = new Stack<char>();
 
 //Sample
 
-/*crate1.Push('Z');
+*//*crate1.Push('Z');
 crate1.Push('N');
 
 crate2.Push('M');
 crate2.Push('C');
 crate2.Push('D');
 
-crate3.Push('P');*/
+crate3.Push('P');*//*
 
 //end of sample
 
@@ -185,5 +187,8 @@ foreach (var line in instructions)
 
 Console.WriteLine($"Final top crates: {crate1.Pop()}{crate2.Pop()}{crate3.Pop()}{crate4.Pop()}{crate5.Pop()}{crate6.Pop()}{crate7.Pop()}{crate8.Pop()}{crate9.Pop()}");
 //Console.WriteLine($"Final top crates: {crate1.Pop()}{crate2.Pop()}{crate3.Pop()}");
+*/
+var partB = new PartB();
+Console.WriteLine(partB.GetTopCrates());
 
 Console.ReadLine();
