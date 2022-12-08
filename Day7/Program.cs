@@ -1,6 +1,6 @@
 ﻿using Day7;
 
-var terminalInput = File.ReadLines(@"TerminalSample.txt");
+var terminalInput = File.ReadLines(@"Terminal.txt");
 
 var activeDirectory = new ElfDirectory();
 
@@ -9,7 +9,7 @@ mainDirectory.Id = 0;
 mainDirectory.DirectoryName = "Root";
 var directoryTree = new List<ElfDirectory>();
 
-var previousDirectory = mainDirectory;
+var previousDirectory = new ElfDirectory();
 
 var totalLevelCount = 1;
 
@@ -40,21 +40,25 @@ foreach (var line in terminalInput)
     else if (line.Contains("cd"))
     {
         if (!line.Equals("$ cd ..")){
-            //totalLevelCount -= 1;
+            totalLevelCount -= 1;
             var nextDirectoryName = string.Concat(line.Skip(5).Take(line.Length - 5));
             Console.WriteLine($"..........Changing directory from {activeDirectory.DirectoryName} to {nextDirectoryName}");
 
             previousDirectory = activeDirectory;
 
             //change the active directory when done
-            activeDirectory = activeDirectory.DirectSubDirectories.Where(n => n.DirectoryName.Equals(nextDirectoryName)).First();
+            var subDirectories = activeDirectory.DirectSubDirectories;
+            var foundDirectory = subDirectories.Where(d => d.DirectoryName.Equals(nextDirectoryName)).ToList();
+            activeDirectory = foundDirectory.First();
 
         }
         else
         {
             totalLevelCount+= 1;
-            activeDirectory = activeDirectory.Equals(previousDirectory) ? mainDirectory : previousDirectory;
-            Console.WriteLine($"..........Moving back from {previousDirectory} to {activeDirectory}");
+            //buggy
+            //activeDirectory = activeDirectory.Equals(previousDirectory) ? mainDirectory : previousDirectory;
+            activeDirectory = previousDirectory;
+            Console.WriteLine($"..........Moving back from {previousDirectory.DirectoryName} to {activeDirectory.DirectoryName}");
         }
     }
     else
@@ -73,25 +77,29 @@ foreach (var line in terminalInput)
     }
 }
 
-Console.WriteLine($"Main directory size = {mainDirectory.Size} and the sum of all files below the threshold is {mainDirectory.BelowThresholdTotal}");
-
 //find all directories below the threshold regardless of where they are in the hierarchy
 //now find their sum
 
-int sum = CalculateSumRecursively(mainDirectory);
+var sizes = new List<int>();
+sizes = GetSizesBelowThreshold(mainDirectory, sizes);
+
+var sum = sizes.Sum();
+
+Console.WriteLine($"sum of all directories below threshold: {sum}");
 
 Console.ReadLine();
 
-[Obsolete("not returning the right value at present")]
-int CalculateSumRecursively(ElfDirectory parentDirectory, int sum = 0)
+List<int> GetSizesBelowThreshold(ElfDirectory parentDirectory, List<int> childDirectorySizes)
 {
+    if (childDirectorySizes == null)
+    {
+        childDirectorySizes = new List<int>();
+    }
+
     foreach (var childDirectory in parentDirectory.DirectSubDirectories.Where(d => d.BelowThreshold.Equals(true)))
     {
-        if (childDirectory.BelowThreshold.Equals(true))
-        {
-            sum += childDirectory.Size;
-            return sum += CalculateSumRecursively(childDirectory, sum);
-        }
+        childDirectorySizes.Add(childDirectory.Size);
+        GetSizesBelowThreshold(childDirectory, childDirectorySizes);
     }
-    return sum;
+    return childDirectorySizes;
 }

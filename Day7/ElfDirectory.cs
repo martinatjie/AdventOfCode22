@@ -16,7 +16,7 @@ namespace Day7
                 return SubDirectoryTotal + FileTotal;
             }
         }
-        public string? DirectoryName { get; set; }
+        public string DirectoryName { get; set; } = "Default";
         public int Level { get; set; }
         public ElfDirectory? ParentDirectory { get; set; }
         public List<ElfDirectory> DirectSubDirectories { get; set; } = new List<ElfDirectory>();
