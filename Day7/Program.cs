@@ -45,4 +45,17 @@ foreach (var line in terminalInput)
 
 var sizes = CommunicationSystemService.CalculateSumOfDirectorySizesBelowThreshold(threshold);
 Console.WriteLine($"sum of all directories below threshold: {sizes}");
+
+var sizeOnDisk = 70000000;
+
+var usedSpace = CommunicationSystemService.GetRootDiskSize();
+
+var spaceNeededForUpdate = 30000000;
+
+var howMuchToDelete = CommunicationSystemService.HowMuchSpaceDoWeNeedToMake(sizeOnDisk, usedSpace, spaceNeededForUpdate);
+
+var smallestEligibleDirectorySize = CommunicationSystemService.FindDirectoryToDelete(howMuchToDelete);
+
+Console.WriteLine($"smallest directory to delete that is closest to the target to run the update: {smallestEligibleDirectorySize}");
+
 Console.ReadLine();

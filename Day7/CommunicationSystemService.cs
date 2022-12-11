@@ -23,6 +23,8 @@ namespace Day7
             return sum;
         }
 
+
+
         private static List<int> GetSizesBelowThreshold(ElfDirectory parentDirectory, List<int> childDirectorySizes)
         {
             if (childDirectorySizes == null)
@@ -102,5 +104,58 @@ namespace Day7
             _parentDirectory = _navigationHistory.Last();
         }
 
+        internal static int GetRootDiskSize()
+        {
+            return _rootDirectory.Size;
+        }
+
+        internal static int HowMuchSpaceDoWeNeedToMake(int sizeOnDisk, int usedSpace, int spaceNeededForUpdate)
+        {
+            var currentSpaceAvailable = sizeOnDisk - usedSpace;
+
+            if (currentSpaceAvailable >= spaceNeededForUpdate)
+            {
+                return 0;
+            }
+            else
+            {
+                return spaceNeededForUpdate - currentSpaceAvailable;
+            }
+        }
+
+        /// <summary>
+        /// finds the smallest possible directory that one could delete to free at least the amount of space as passed in
+        /// </summary>
+        /// <param name="howMuchToDelete">how much space as a minimum needs to be deleted</param>
+        /// <returns>an eligible directory for deletion</returns>
+        internal static int FindDirectoryToDelete(int howMuchToDelete)
+        {
+            var eligibleDirectorySizes = new List<int>();
+
+            eligibleDirectorySizes = GetDirectoriesAboveThreshold(_rootDirectory, eligibleDirectorySizes, howMuchToDelete);
+
+            eligibleDirectorySizes.Sort();
+
+            return eligibleDirectorySizes[0];
+        }
+
+        private static List<int> GetDirectoriesAboveThreshold(ElfDirectory parentDirectory, List<int> eligibleChildDirectorySizes, int minimumSize)
+        {
+            if (eligibleChildDirectorySizes == null)
+            {
+                eligibleChildDirectorySizes = new List<int>();
+            }
+
+            foreach (var childDirectory in parentDirectory.DirectSubDirectories)
+            {
+                if (childDirectory.Size >= minimumSize)
+                {
+                    eligibleChildDirectorySizes.Add(childDirectory.Size);
+                }
+
+                GetDirectoriesAboveThreshold(childDirectory, eligibleChildDirectorySizes, minimumSize);
+            }
+            return eligibleChildDirectorySizes;
+        }
     }
 }

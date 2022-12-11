@@ -17,7 +17,6 @@ namespace Day7
             }
         }
         public string DirectoryName { get; set; } = "Root";
-        public int Level { get; set; }
         public ElfDirectory? ParentDirectory { get; set; }
         public List<ElfDirectory> DirectSubDirectories { get; set; } = new List<ElfDirectory>();
         public int SubDirectoryTotal
@@ -25,14 +24,6 @@ namespace Day7
             get
             {
                 return DirectSubDirectories.Sum(d => d.Size);
-            }
-        }
-        public int BelowThresholdTotal
-        {
-            get
-            {
-                var directories = DirectSubDirectories.Where(d => d.BelowThreshold.Equals(true));
-                return directories.Sum(d => d.Size);
             }
         }
         public int FileTotal
@@ -50,6 +41,5 @@ namespace Day7
                 return Size <= 100000 ? true : false;
             }
         }
-
     }
 }
